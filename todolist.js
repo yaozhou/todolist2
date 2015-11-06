@@ -1,5 +1,11 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+var util = require('util') ;
+
+//create table item (id INT auto_incremnt, item varchar(1024), category int, primary key(id)) DEFAULT CHARSET=utf8;
+// create table t_category (id int auto_increment, category int, primary key(id)) DEFAULT CHARSET=utf8;
+//create table t_category (id int auto_increment, category varchar(1024), primary key(id)) DEFAULT CHARSET=utf8;
 
 var mysql = require('mysql');
 var conn = mysql.createConnection({
@@ -11,37 +17,71 @@ var conn = mysql.createConnection({
 });
 
 conn.connect();
+conn.query("SET character_set_client=utf8,character_set_connection=utf8");
 
 app.use(express.static('static'));
 
-app.get('/weather', function (req, res) {
-  res.send('Hello World! route');
-});
+app.use(bodyParser.json('1mb'));  //body-parser 解析json格式数据
+app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
+  extended: true
+}));
 
-
-	
-
-app.get('/message', function (req, res) {
-
-	conn.query('SELECT * from t_message', function(err, rows, fields) {
+app.post('/api/item_list', function (req, res) {
+	conn.query('SELECT * from t_item', function(err, rows, fields) {
     	if (err) throw err;
-    	var message_list = ''
-    	for (var i = 0; i < rows.length; i++) {
-    		message_list += rows[i].name + '\n' ;
-	    };
+    	
 	    var str = JSON.stringify(rows) ;
-	    console.log('The solution is: ', str) ;
 	    res.send(str) ;
 	}) ;
-	
-  	
 });
 
-// conn.end();
 
+app.post('/api/item_add', function(req, res) {
+	var sql = util.format('INSERT INTO t_item(item, category) VALUES ("%s",%d);',
+				req.body.item, req.body.category) ;
+	console.log("add message(" + sql + ")") 
 
+	conn.query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		// console.log(JSON.stringify(rows)) ;
+		res.send(JSON.stringify({"code":0, "item_id":rows.insertId, "category_id": req.body.category})) ;
+	})
+}) ;
 
+app.post('/api/item_del', function(req, res) {
+	var sql = "DELETE FROM t_item where id = " + req.body.id + ";" ;
+	console.log("del message(" + sql + ")") ;
 
+	conn.query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		res.send(JSON.stringify({"code":0, "id":req.body.id})) ;
+	})
+})
+
+app.post('/api/category_add', function(req, res) {
+	var sql = "INSERT INTO t_category (category) VALUES ('" + req.body.category + "');" ;
+	console.log("sql:" + sql) ;
+	conn.query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		res.send(JSON.stringify({"code":0, "id":rows.insertId, "name":req.body.category})) ;
+	})
+}) ;
+
+app.post('/api/category_del', function(req, res) {
+	var sql = "DELETE FROM t_category where id = " + req.body.id + ";" ;
+	conn.query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		res.send(JSON.stringify({"code" : 0})) ;
+	})
+}) ;
+
+app.post('/api/category_list', function(req, res) {
+	var sql = "select * from t_category" ; 
+	conn.query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		res.send(JSON.stringify(rows)) ;
+	})
+}) ;
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
