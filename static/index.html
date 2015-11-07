@@ -10,6 +10,9 @@
 <script src="bootstrap.js?body=1"></script>
 <script type="text/javascript"> 
 
+//var host='http://106.186.121.34:3001'
+var host='http://localhost:3001'
+
 String.format = function() {
     var theString = arguments[0];
     for (var i = 1; i < arguments.length; i++) {
@@ -21,7 +24,7 @@ String.format = function() {
 
 function update_category() {
 	$(nav_tab).empty() ;
-	$.post('http://localhost:3001/api/category_list',
+	$.post(host + '/api/category_list',
 		{},
 		function(data) {
 			var rows = JSON.parse(data) ;
@@ -32,7 +35,7 @@ function update_category() {
 }
 
 function category_add_request() {
-	$.post('http://localhost:3001/api/category_add',
+	$.post(host + '/api/category_add',
 		{"category" : $("#category_name").val()},
 		function(data) {
 			 var ret = JSON.parse(data) ;
@@ -88,7 +91,7 @@ function category_del_client(category_id) {
 }
 
 function category_del_request(category_id) {
-	$.post('http://localhost:3001/api/category_del',
+	$.post(host + '/api/category_del',
 			{"id" : category_id},
 			function(data) {
 				 var ret = JSON.parse(data) ;
@@ -114,7 +117,7 @@ function item_del_client(id) {
 }
 
 function item_del_request(id) {
-	$.post('http://localhost:3001/api/item_del',
+	$.post(host + '/api/item_del',
 			{"id" : id },
 			function(data) {
 				var ret = JSON.parse(data) ;
@@ -125,7 +128,7 @@ function item_del_request(id) {
 }
 
 function item_add_request(category, item) {
-	$.post('http://localhost:3001/api/item_add',
+	$.post(host + '/api/item_add',
 		{"item":item, "category":category},
 		function(data) {
 			 var ret = JSON.parse(data) ;
@@ -137,7 +140,7 @@ function item_add_request(category, item) {
 
 function update_item() {
 
-	$.post('http://localhost:3001/api/item_list',
+	$.post(host + '/api/item_list',
 	{},
 	function(data) {
 		var rows = JSON.parse(data) ;
