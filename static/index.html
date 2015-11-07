@@ -31,6 +31,7 @@ function update_category() {
 			for (var i = 0; i < rows.length; i++) {
 				category_add_client(rows[i].category, rows[i].id, i==0) ;				
 			};
+			update_item() ;
 		})
 }
 
@@ -154,7 +155,7 @@ function update_item() {
 
 $(document).ready(function(){
 	update_category() ;
-	update_item() ;
+	
 	$("#category_add").click(category_add_request) ;
 }); 
 
