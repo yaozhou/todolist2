@@ -10,8 +10,8 @@
 <script src="bootstrap.js?body=1"></script>
 <script type="text/javascript"> 
 
-//var host='http://106.186.121.34:3001'
-var host='http://localhost:3001'
+var host='http://106.186.121.34:3001'
+//var host='http://localhost:3001'
 
 String.format = function() {
     var theString = arguments[0];
@@ -67,7 +67,7 @@ function category_add_client(category_name, category_id, b_active) {
 
 	$("#btn_add_to_category_" + category_id).bind("click", function() {
 		var content = $("#txt_add_to_categorty_" + category_id).val() ;
-		$.post('http://localhost:3001/api/item_add',
+		$.post(host + '/api/item_add',
 				{"item" : content, "category" : category_id},
 				function(data) {
 					 var ret = JSON.parse(data) ;
