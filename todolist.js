@@ -71,7 +71,7 @@ app.post('/api/category_del', function(req, res) {
 	var sql = "DELETE FROM t_category where id = " + req.body.id + ";" ;
 	conn.query(sql, function(err, rows, fields) {
 		if (err) throw err ;
-		res.send(JSON.stringify({"code" : 0})) ;
+		res.send(JSON.stringify({"code" : 0, "id":req.body.id})) ;
 	})
 }) ;
 
@@ -83,7 +83,7 @@ app.post('/api/category_list', function(req, res) {
 	})
 }) ;
 
-var server = app.listen(3000, function () {
+var server = app.listen(3001, function () {
   var host = server.address().address;
   var port = server.address().port;
 
