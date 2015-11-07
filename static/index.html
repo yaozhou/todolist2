@@ -31,6 +31,7 @@ function update_category() {
 			for (var i = 0; i < rows.length; i++) {
 				category_add_client(rows[i].category, rows[i].id, i==0) ;				
 			};
+			update_item() ;
 		})
 }
 
@@ -67,7 +68,7 @@ function category_add_client(category_name, category_id, b_active) {
 
 	$("#btn_add_to_category_" + category_id).bind("click", function() {
 		var content = $("#txt_add_to_categorty_" + category_id).val() ;
-		$.post('http://localhost:3001/api/item_add',
+		$.post(host + '/api/item_add',
 				{"item" : content, "category" : category_id},
 				function(data) {
 					 var ret = JSON.parse(data) ;
@@ -154,7 +155,7 @@ function update_item() {
 
 $(document).ready(function(){
 	update_category() ;
-	update_item() ;
+	
 	$("#category_add").click(category_add_request) ;
 }); 
 
