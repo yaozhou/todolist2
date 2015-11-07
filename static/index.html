@@ -3,9 +3,9 @@
 <head> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 <title>todolist</title> 
-<script type="text/javascript" src="http://106.186.121.34:3000/assets/jquery.js?body=1"></script> 
+<script type="text/javascript" src="http://106.186.121.34:3001/assets/jquery.js?body=1"></script> 
 <!-- <script type="text/javascript" src="util.js"></script>  -->
-<!-- <link href="http://106.186.121.34:3000/assets/bootstrap.css?body=1" rel="stylesheet"> -->
+<!-- <link href="http://106.186.121.34:3001/assets/bootstrap.css?body=1" rel="stylesheet"> -->
 <link href="bootstrap.css?body=1" rel="stylesheet">
 <script src="bootstrap.js?body=1"></script>
 <script type="text/javascript"> 
@@ -21,7 +21,7 @@ String.format = function() {
 
 function update_category() {
 	$(nav_tab).empty() ;
-	$.post('http://localhost:3000/api/category_list',
+	$.post('http://localhost:3001/api/category_list',
 		{},
 		function(data) {
 			var rows = JSON.parse(data) ;
@@ -32,7 +32,7 @@ function update_category() {
 }
 
 function category_add_request() {
-	$.post('http://localhost:3000/api/category_add',
+	$.post('http://localhost:3001/api/category_add',
 		{"category" : $("#category_name").val()},
 		function(data) {
 			 var ret = JSON.parse(data) ;
@@ -64,7 +64,7 @@ function category_add_client(category_name, category_id, b_active) {
 
 	$("#btn_add_to_category_" + category_id).bind("click", function() {
 		var content = $("#txt_add_to_categorty_" + category_id).val() ;
-		$.post('http://localhost:3000/api/item_add',
+		$.post('http://localhost:3001/api/item_add',
 				{"item" : content, "category" : category_id},
 				function(data) {
 					 var ret = JSON.parse(data) ;
@@ -88,7 +88,7 @@ function category_del_client(category_id) {
 }
 
 function category_del_request(category_id) {
-	$.post('http://localhost:3000/api/category_del',
+	$.post('http://localhost:3001/api/category_del',
 			{"id" : category_id},
 			function(data) {
 				 var ret = JSON.parse(data) ;
@@ -114,7 +114,7 @@ function item_del_client(id) {
 }
 
 function item_del_request(id) {
-	$.post('http://localhost:3000/api/item_del',
+	$.post('http://localhost:3001/api/item_del',
 			{"id" : id },
 			function(data) {
 				var ret = JSON.parse(data) ;
@@ -125,7 +125,7 @@ function item_del_request(id) {
 }
 
 function item_add_request(category, item) {
-	$.post('http://localhost:3000/api/item_add',
+	$.post('http://localhost:3001/api/item_add',
 		{"item":item, "category":category},
 		function(data) {
 			 var ret = JSON.parse(data) ;
@@ -137,7 +137,7 @@ function item_add_request(category, item) {
 
 function update_item() {
 
-	$.post('http://localhost:3000/api/item_list',
+	$.post('http://localhost:3001/api/item_list',
 	{},
 	function(data) {
 		var rows = JSON.parse(data) ;

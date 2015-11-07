@@ -3,8 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var util = require('util') ;
 
-//create table item (id INT auto_incremnt, item varchar(1024), category int, primary key(id)) DEFAULT CHARSET=utf8;
-// create table t_category (id int auto_increment, category int, primary key(id)) DEFAULT CHARSET=utf8;
+//create table t_item (id INT auto_increment, item varchar(1024), category int, primary key(id)) DEFAULT CHARSET=utf8;
 //create table t_category (id int auto_increment, category varchar(1024), primary key(id)) DEFAULT CHARSET=utf8;
 
 var mysql = require('mysql');
