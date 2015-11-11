@@ -7,16 +7,35 @@ var util = require('util') ;
 //create table t_category (id int auto_increment, category varchar(1024), primary key(id)) DEFAULT CHARSET=utf8;
 
 var mysql = require('mysql');
-var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'na',
-    database:'todolist',
-    port: 3306
-});
 
-conn.connect();
-conn.query("SET character_set_client=utf8,character_set_connection=utf8");
+function query(sql, fun) {
+
+	var conn = mysql.createConnection({
+	    host: 'localhost',
+	    user: 'root',
+	    password: 'na',
+	    database:'todolist',
+	    port: 3306
+	});
+
+	conn.connect();   
+	conn.query(sql, fun) ;
+	conn.end() ;
+}
+
+// var conn = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '123456',
+//     database:'todolist',
+//     port: 3306
+// });
+
+// conn.connect();   
+// conn.query("SET character_set_client=utf8,character_set_connection=utf8");
+// conn.end() ;
+
+query("SET character_set_client=utf8,character_set_connection=utf8") ;
 
 app.use(express.static('static'));
 
@@ -26,7 +45,7 @@ app.use(bodyParser.urlencoded({            //´ËÏî±ØÐëÔÚ bodyParser.json ÏÂÃæ,Îª²
 }));
 
 app.post('/api/item_list', function (req, res) {
-	conn.query('SELECT * from t_item', function(err, rows, fields) {
+	query('SELECT * from t_item', function(err, rows, fields) {
     	if (err) throw err;
     	
 	    var str = JSON.stringify(rows) ;
@@ -40,7 +59,7 @@ app.post('/api/item_add', function(req, res) {
 				req.body.item, req.body.category) ;
 	console.log("add message(" + sql + ")") 
 
-	conn.query(sql, function(err, rows, fields) {
+	query(sql, function(err, rows, fields) {
 		if (err) throw err ;
 		// console.log(JSON.stringify(rows)) ;
 		res.send(JSON.stringify({"code":0, "item_id":rows.insertId, "category_id": req.body.category})) ;
@@ -51,7 +70,7 @@ app.post('/api/item_del', function(req, res) {
 	var sql = "DELETE FROM t_item where id = " + req.body.id + ";" ;
 	console.log("del message(" + sql + ")") ;
 
-	conn.query(sql, function(err, rows, fields) {
+	query(sql, function(err, rows, fields) {
 		if (err) throw err ;
 		res.send(JSON.stringify({"code":0, "id":req.body.id})) ;
 	})
@@ -60,7 +79,7 @@ app.post('/api/item_del', function(req, res) {
 app.post('/api/category_add', function(req, res) {
 	var sql = "INSERT INTO t_category (category) VALUES ('" + req.body.category + "');" ;
 	console.log("sql:" + sql) ;
-	conn.query(sql, function(err, rows, fields) {
+	query(sql, function(err, rows, fields) {
 		if (err) throw err ;
 		res.send(JSON.stringify({"code":0, "id":rows.insertId, "name":req.body.category})) ;
 	})
@@ -68,7 +87,7 @@ app.post('/api/category_add', function(req, res) {
 
 app.post('/api/category_del', function(req, res) {
 	var sql = "DELETE FROM t_category where id = " + req.body.id + ";" ;
-	conn.query(sql, function(err, rows, fields) {
+	query(sql, function(err, rows, fields) {
 		if (err) throw err ;
 		res.send(JSON.stringify({"code" : 0, "id":req.body.id})) ;
 	})
@@ -76,7 +95,7 @@ app.post('/api/category_del', function(req, res) {
 
 app.post('/api/category_list', function(req, res) {
 	var sql = "select * from t_category" ; 
-	conn.query(sql, function(err, rows, fields) {
+	query(sql, function(err, rows, fields) {
 		if (err) throw err ;
 		res.send(JSON.stringify(rows)) ;
 	})
