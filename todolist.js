@@ -51,7 +51,6 @@ app.post('/api/item_list', function (req, res) {
 	    var str = JSON.stringify(rows) ;
 	    res.send(str) ;
 	}) ;
-	conn.end() ;
 });
 
 
