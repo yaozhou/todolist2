@@ -23,18 +23,6 @@ function query(sql, fun) {
 	conn.end() ;
 }
 
-// var conn = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '123456',
-//     database:'todolist',
-//     port: 3306
-// });
-
-// conn.connect();   
-// conn.query("SET character_set_client=utf8,character_set_connection=utf8");
-// conn.end() ;
-
 query("SET character_set_client=utf8,character_set_connection=utf8") ;
 
 app.use(express.static('static'));
@@ -99,6 +87,14 @@ app.post('/api/category_list', function(req, res) {
 		if (err) throw err ;
 		res.send(JSON.stringify(rows)) ;
 	})
+}) ;
+
+app.post('/api/table_query', function(req, res) {
+	var sql = "select * from " + req.body.name + " ;" ;
+	query(sql, function(err, rows, fields) {
+		if (err) throw err ;
+		res.send(JSON.stringify(rows)) ;
+	}) ;
 }) ;
 
 var server = app.listen(3001, function () {
