@@ -13,7 +13,7 @@ function query(sql, fun) {
 	var conn = mysql.createConnection({
 	    host: 'localhost',
 	    user: 'root',
-	    password: 'na',
+	    password: 'yao',
 	    database:'todolist',
 	    port: 3306
 	});
